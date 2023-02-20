@@ -1,33 +1,29 @@
-const ajax = new XMLHttpRequest(); //AJAX 이렇게하면  변수에다가 저장한 값을 저장한다.
-const news_url = 'https://api.hnpwa.com/v0/news/1.json'
+// 요약.
+// url값을 저장하여 데이터를 열고 저장하고 json형태로 변환한다.
 
-ajax.open('GET', news_url, false)
-// 사용법중 하나. 동기적으로 어디서 가지고 올 것인지 정하겠다.
+// for문을 돌면서 테그들을 생성 하는데.성성된 태그를 최정적으로 id값을 지정된 곳에 넣는다.
+//   테그생성 -> 테그에 innerHTML해서 값을 넣고 -> appendChild로 특정 id에 넣는다.
+//*********************************************************************************** */
 
-ajax.send();
-// 데이터를 가지고 온다
 
-// console.log(ajax.response);
-// 그 가지고온 데이터가 어디에 있는가? ajax.response에 있다.
+const ajax = new XMLHttpRequest();//ajax변수에 ajax기능을 대입한다.
+const NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';//NEWS_URL에 open api를 등록한다.
 
-// 개발자 도구에서 preview를 보면 데이터가 이쁘게 나온다.(객체로 나온다.)
+ajax.open('GET', NEWS_URL, false);//ajax사용법 중 하나로 동기적으로 어디서 가지고 올것 인지 정한다. 
 
-// 그래서 객체인 json형식으로 바꿔야 한다.
+ajax.send();//데이터를 가지고 온다.
 
-const newsFeed = JSON.parse(ajax.response)
-// 괄호안의 데이터를 JSON 객체 데이터로 바꿔준다.
-const ul = document.createElement('ul');
-// document가 바로 html을 조작하는 도구.
-
+const newsFeed = JSON.parse(ajax.response);//괄호안의 데이터를 json객체 대이터로 변환한다.
+const ul = document.createElement('ul');// document.createElement은 html을 생성할수 있게 해준다, ul을 생성했다.
 
 for (let i = 0; i < 10; i++) {
-  const li = document.createElement('li');
+  const li = document.createElement('li');//html테그 li생성
 
-  li.innerHTML = newsFeed[i].title
-  ul.appendChild(li);
+  li.innerHTML = newsFeed[i].title;//for문을 돌면서 데이터의 타이틀을 li테그에 넣는다.
 
+  ul.appendChild(li);//li테그를 ul테그에 넣는다.
 }
 
-document.getElementById('root').appendChild(ul)
-// appendchild는 자식 div태그 하위의 자식요소를 괄호 안에 있는걸 추가한다.
+document.getElementById('root').appendChild(ul);//root라는id에 ul을 넣는다.
+
 

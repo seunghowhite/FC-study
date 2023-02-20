@@ -118,18 +118,55 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"app.js":[function(require,module,exports) {
+// 설명안된건 프로젝트 세팅 참고.
 var ajax = new XMLHttpRequest();
+var content = document.createElement('div'); //div테그 생성
+var container = document.getElementById('root'); //루트라는 id값 맨아래에서 쓰임.
 var NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
+var CONTENT_URL = 'https://api.hnpwa.com/v0/news/@id.json'; //문서에서 제공한 개별 아이템 url
+
 ajax.open('GET', NEWS_URL, false);
 ajax.send();
 var newsFeed = JSON.parse(ajax.response);
 var ul = document.createElement('ul');
+window.addEventListener('hashchange', function () {
+  var id = location.hash.substring(1); //(로케이션은 브라우저에 제공되는 여러가지 기능을 제공) 헤시값을 반환함
+
+  ajax.open('GET', CONTENT_URL.replace('@id', id), false); //클릭시 getURL을 실행하고 또한 그 URL에 @id를 id로 바꿔라.
+  ajax.send();
+  var newsContent = JSON.parse(ajax.response); //그 url 데이터의 값들을 json파일로 변환
+  var title = document.createElement('h1');
+  title.innerHTML = newsContent.title;
+  content.appendChild(title);
+  // console.log(newsContent)//이거안댐
+}); //해시체인지가 일어났을때 수행할 콜백 함수.
+
 for (var i = 0; i < 10; i++) {
   var li = document.createElement('li');
-  li.innerHTML = newsFeed[i].title;
+  var a = document.createElement('a'); //a테그생성
+
+  a.href = "#".concat(newsFeed[i].id); //a테그에 href 값을 먹인다. 클릭시 해시체인지가 id로 변환되도록.일어나 도록 해보자
+  a.innerHTML = "".concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")"); //댓글수comments_count를 생성
+
+  li.appendChild(a);
   ul.appendChild(li);
 }
-document.getElementById('root').appendChild(ul);
+container.appendChild(ul);
+container.appendChild(content); //div생성
+
+// 요약 우선적으로 공식 문서에서 제공한 개별 아이템 url을 불러온다. 그때 마킹을 해둔다.
+// 1.href에#id값을 먹인다. 그러면 URL이 변경된다.
+
+// 2.이제 window.addEventListener차례
+// 해시 체인지가 일어났을때 발생하게 한다.
+
+// 3.id값이 href에 먹여져 있는데 (URL에 해시값을 가저온다) 즉 그것을 location.hash를 가지고 와서 id 변수로 저장한다.
+
+// 4.이제 url을 변환 할 차례 url의 id마킹한 곳에 id를 넣고 불러온다.
+
+// 5. 데이터를 최종적으로 json형태로 변환한다.
+
+// 6. 그다음 innerHTML값으로 넣어준다.
 },{}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -155,7 +192,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55460" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65369" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
