@@ -1,4 +1,4 @@
-#공부 기록용
+# 공부 기록용
 
 #### JavaScript & TypeScript Essential (진행중.)
 1. 시작하며
